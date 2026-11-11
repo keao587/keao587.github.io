@@ -1,0 +1,51 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  summary: string;
+  year: string;
+  tags?: string[];
+  index?: number;
+}
+
+const { href, title, summary, year, tags = [], index = 0 } = Astro.props;
+const delay = Math.min(index, 6) * 60;
+---
+
+<a
+  class="work-card"
+  href={href}
+  data-reveal
+  style={`transition-delay:${delay}ms`}
+>
+  <div class="work-card-top">
+    <span class="work-year">{year}</span>
+    <span class="work-arrow" aria-hidden="true">
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 12 12"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M3 9 9 3M4.5 3H9v4.5"></path>
+      </svg>
+    </span>
+  </div>
+
+  <h3>{title}</h3>
+  <p>{summary}</p>
+
+  {
+    tags.length > 0 && (
+      <ul class="tag-row">
+        {tags.map((tag) => (
+          <li class="tag">{tag}</li>
+        ))}
+      </ul>
+    )
+  }
+</a>

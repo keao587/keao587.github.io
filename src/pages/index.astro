@@ -1,0 +1,176 @@
+---
+import Base from '../layouts/Base.astro';
+import WorkCard from '../components/WorkCard.astro';
+import LabRow from '../components/LabRow.astro';
+import { getCollection } from 'astro:content';
+import { SITE, NOW } from '../config';
+import { url } from '../lib/url';
+
+const works = (await getCollection('works', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+
+const lab = (await getCollection('lab', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 5);
+
+const year = new Date().getFullYear();
+---
+
+<Base>
+  <!-- ── Hero ───────────────────────────────────────────── -->
+  <section class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <p class="hero-eyebrow mono">{SITE.role} · {SITE.location}</p>
+
+        <h1 class="hero-title">
+          {SITE.name}<span class="accent">.</span>
+        </h1>
+
+        <p class="hero-tagline">{SITE.tagline}</p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#works">看看作品</a>
+          <a class="btn btn-ghost" href="#contact">聊聊</a>
+        </div>
+      </div>
+
+      <aside class="now-card" aria-labelledby="now-title">
+        <h2 id="now-title">现在</h2>
+        <dl class="now-list">
+          {
+            NOW.map((item) => (
+              <div>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ── 作品 ───────────────────────────────────────────── -->
+  <section class="wrap section" id="works">
+    <div class="section-head">
+      <h2><span class="idx">01</span>作品</h2>
+      <a class="section-more" href={url('/works/')}>
+        全部作品
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    {
+      works.length > 0 ? (
+        <div class="work-grid">
+          {works.map((work, i) => (
+            <WorkCard
+              href={url(`/works/${work.id}/`)}
+              title={work.data.title}
+              summary={work.data.summary}
+              year={work.data.year}
+              tags={work.data.tags}
+              index={i}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="empty">作品还在整理中，很快放上来。</p>
+      )
+    }
+  </section>
+
+  <!-- ── 实验室 ─────────────────────────────────────────── -->
+  <section class="wrap section" id="lab">
+    <div class="section-head">
+      <h2><span class="idx">02</span>创意实验室</h2>
+      <a class="section-more" href={url('/lab/')}>
+        全部实验
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    {
+      lab.length > 0 ? (
+        <ul class="lab-list">
+          {lab.map((item, i) => (
+            <LabRow
+              title={item.data.title}
+              summary={item.data.summary}
+              status={item.data.status}
+              year={item.data.year}
+              href={url(`/lab/${item.id}/`)}
+              index={i}
+            />
+          ))}
+        </ul>
+      ) : (
+        <p class="empty">还没有实验，先去想想。</p>
+      )
+    }
+  </section>
+
+  <!-- ── 关于 ───────────────────────────────────────────── -->
+  <section class="wrap section" id="about">
+    <div class="section-head">
+      <h2><span class="idx">03</span>关于</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy">
+        <p>
+          我是 <strong>{SITE.name}</strong>。习惯把问题拆小，然后一个个做完——
+          这个站点就是那种「先做出来再说」的东西。
+        </p>
+        <p>
+          喜欢干净的结构、克制的动效，和那种一眼就知道重点在哪里的界面。
+          做东西的时候最怕两件事：为了好看牺牲能用，和等做到完美才发布。
+        </p>
+        <p>
+          这个网站会一直往下长：作品会加、实验会加、想法也会加。
+          <a href={url('/lab/')}>实验室</a> 是最能看出我在想什么的地方。
+        </p>
+      </div>
+
+      <dl class="fact-list">
+        <div>
+          <dt>现在在做</dt>
+          <dd>维护这个站点，往里填东西</dd>
+        </div>
+        <div>
+          <dt>关注</dt>
+          <dd>排版 · 交互细节 · 工具化</dd>
+        </div>
+        <div>
+          <dt>常用</dt>
+          <dd>Astro · TypeScript · Figma</dd>
+        </div>
+        <div>
+          <dt>状态</dt>
+          <dd>乐于接洽合作</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ── 联系 ───────────────────────────────────────────── -->
+  <section class="wrap contact" id="contact">
+    <div class="contact-inner">
+      <div>
+        <h2>有想法？<br /><em>说给我听。</em></h2>
+        <p class="contact-sub">
+          合作、聊天、或者单纯觉得某个地方可以更好，都欢迎发消息。
+        </p>
+      </div>
+
+      <div>
+        <a class="mail-link" href={`mailto:${SITE.email}`}>
+          {SITE.email}
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

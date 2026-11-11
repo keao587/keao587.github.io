@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sailor">
+  <rect width="64" height="64" rx="14" fill="#16181d" />
+  <path d="M33 12.5 L33 45 L19.5 45 Z" fill="#e8825a" />
+  <path d="M34.8 21 L45 45 L34.8 45 Z" fill="#f0d9cd" opacity="0.92" />
+  <path d="M16 51.5 H48" stroke="#f0d9cd" stroke-width="3" stroke-linecap="round" opacity="0.85" />
+</svg>

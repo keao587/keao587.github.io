@@ -1,0 +1,51 @@
+---
+interface Props {
+  title: string;
+  summary: string;
+  status: 'live' | 'building' | 'idea';
+  year?: string;
+  href?: string;
+  external?: string;
+  index?: number;
+}
+
+const { title, summary, status, year, href, external, index = 0 } = Astro.props;
+
+const LABELS: Record<string, string> = {
+  live: '已上线',
+  building: '进行中',
+  idea: '想法',
+};
+
+const delay = Math.min(index, 8) * 45;
+const target = href ?? external;
+const isExternal = !href && Boolean(external);
+---
+
+<li
+  class="lab-row"
+  data-reveal
+  style={`transition-delay:${delay}ms`}
+  data-tags=""
+>
+  <span class="lab-status" data-status={status}>{LABELS[status]}</span>
+
+  <div class="lab-main">
+    {
+      target ? (
+        <a
+          href={target}
+          target={isExternal ? '_blank' : undefined}
+          rel={isExternal ? 'noopener noreferrer' : undefined}
+        >
+          <strong>{title}</strong>
+        </a>
+      ) : (
+        <strong>{title}</strong>
+      )
+    }
+    <span>{summary}</span>
+  </div>
+
+  <span class="lab-meta">{year ?? ''}</span>
+</li>

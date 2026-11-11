@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works', ({ data }) => !data.draft);
+  return works.map((work) => ({
+    params: { slug: work.id },
+    props: { work },
+  }));
+}
+
+const { work } = Astro.props;
+const { Content } = await render(work);
+const { title, summary, year, role, tags, link } = work.data;
+---
+
+<Base title={title} description={summary}>
+  <article class="wrap">
+    <header class="page-head">
+      <p class="mono">{year}{role ? ` · ${role}` : ''}</p>
+      <h1>{title}</h1>
+      <p>{summary}</p>
+
+      {
+        tags.length > 0 && (
+          <ul class="tag-row" style="margin-top:1.25rem">
+            {tags.map((tag) => (
+              <li class="tag">{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        link && (
+          <p style="margin-top:1.5rem">
+            <a class="btn btn-ghost" href={link} target="_blank" rel="noopener noreferrer">
+              访问项目 ↗
+            </a>
+          </p>
+        )
+      }
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <p style="padding-bottom: clamp(3rem, 8vw, 5rem)">
+      <a class="section-more" href={url('/works/')}>
+        <span aria-hidden="true">←</span> 回到作品列表
+      </a>
+    </p>
+  </article>
+</Base>

@@ -1,0 +1,6 @@
+# 统一换行符，避免 Windows 上提交后被 Git 转成 CRLF 影响 CI
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary

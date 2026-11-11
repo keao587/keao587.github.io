@@ -1,0 +1,24 @@
+---
+import { SITE } from '../config';
+import { url } from '../lib/url';
+
+const year = new Date().getFullYear();
+const socials = SITE.socials.filter((s) => s.href && s.href !== '');
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p>© {year} {SITE.name} · 用 Astro 搭的</p>
+    <div class="footer-links">
+      {
+        socials.map((s) => (
+          <a href={s.href} target="_blank" rel="noopener noreferrer">
+            {s.label}
+          </a>
+        ))
+      }
+      <a href={url('/works/')}>作品</a>
+      <a href={url('/lab/')}>实验室</a>
+    </div>
+  </div>
+</footer>

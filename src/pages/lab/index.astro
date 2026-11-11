@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import LabRow from '../../components/LabRow.astro';
+import { getCollection } from 'astro:content';
+import { url } from '../../lib/url';
+
+const lab = (await getCollection('lab', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const counts = {
+  live: lab.filter((i) => i.data.status === 'live').length,
+  building: lab.filter((i) => i.data.status === 'building').length,
+  idea: lab.filter((i) => i.data.status === 'idea').length,
+};
+---
+
+<Base
+  title="实验室"
+  description="想法、半成品，和一些还没想清楚就先做出来的东西。"
+>
+  <header class="wrap page-head">
+    <p class="mono">Lab</p>
+    <h1>创意实验室</h1>
+    <p>
+      想法、半成品，和还没想清楚就先动手的东西。
+      已上线 {counts.live} 个 · 在做 {counts.building} 个 · 只有想法 {counts.idea} 个。
+    </p>
+  </header>
+
+  <section class="wrap" style="padding-bottom: clamp(3rem, 8vw, 5rem)">
+    {
+      lab.length > 0 ? (
+        <ul class="lab-list">
+          {lab.map((item, i) => (
+            <LabRow
+              title={item.data.title}
+              summary={item.data.summary}
+              status={item.data.status}
+              year={item.data.year}
+              href={url(`/lab/${item.id}/`)}
+              index={i}
+            />
+          ))}
+        </ul>
+      ) : (
+        <p class="empty">实验室还空着。第一个想法通常最难开始。</p>
+      )
+    }
+  </section>
+</Base>

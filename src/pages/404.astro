@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+---
+
+<Base title="页面走丢了" description="这个地址没有对应的页面。">
+  <section class="wrap page-head" style="padding-block: clamp(4rem,12vw,8rem)">
+    <p class="mono">404</p>
+    <h1>这页还没被做出来。</h1>
+    <p>
+      地址可能写错了，或者这个页面还在实验室里躺着。
+    </p>
+    <p style="margin-top:2rem">
+      <a class="btn btn-primary" href={url('/')}>回首页</a>
+    </p>
+  </section>
+</Base>
