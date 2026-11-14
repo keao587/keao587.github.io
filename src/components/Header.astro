@@ -8,7 +8,7 @@ const normalized = pathname.endsWith('/') ? pathname : `${pathname}/`;
 
 const links = NAV.map((item) => {
   const isHash = item.href.includes('#');
-  const target = item.href.replace('/#', '/').replace('#', '');
+  const target = url(item.href.replace('/#', '/').replace('#', ''));
   const active = !isHash && normalized.startsWith(target);
   return { ...item, active };
 });

@@ -1,6 +1,21 @@
 # 个人网站
 
+**线上地址：https://keao587.github.io/**
+
 Astro 静态站，部署在 GitHub Pages。改内容不用碰代码：作品和实验都是 Markdown 文件。
+
+## 怎么更新线上内容
+
+改完内容后：
+
+```bash
+pnpm build          # 先本地确认能构建
+git add -A
+git commit -m "加了一个作品"
+git push
+```
+
+推送后 GitHub Actions 会自动构建并发布，大约 1 分钟生效。
 
 ## 本地开发
 
