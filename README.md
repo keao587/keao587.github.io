@@ -24,7 +24,21 @@ pnpm install     # 第一次
 pnpm dev         # 开发服务器 http://localhost:4321
 pnpm build       # 构建到 dist/
 pnpm preview     # 预览构建结果
+pnpm netcheck    # 网络体检：分清是链路、代理还是权限的问题
 ```
+
+### 网络体检
+
+推不上去、`git` 老超时、或者 `curl` 报一堆连不上的时候，先跑：
+
+```bash
+pnpm netcheck
+```
+
+它会打印代理状态、DNS 解析、TCP 建连耗时、HTTPS 实际响应，以及绕开 DNS 的裸 IP 出口测试。
+用的是 Node 自己的 TLS 栈，不受 Windows 系统代理和 schannel 影响，所以比 `curl` 更适合做基准判断。
+
+退出码：`0` 全通，`1` 部分目标失败（间歇性干扰），`2` 大面积不通。
 
 ## 怎么加东西
 
